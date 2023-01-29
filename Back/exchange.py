@@ -32,7 +32,7 @@ def delete_conv(id):
         return jsonify({'status': 'success'})
     else:   
         return jsonify({'status': 'fail'})
-    
+
 @exchange.route('/api/messages', methods=['GET', 'POST'])
 def messages():
     if request.method=='GET':

@@ -26,6 +26,17 @@
       </v-col>
     </v-row>
   </v-form>
+
+  <v-list-item v-for="(message, id) in messages" :key="id">
+    <v-list-item-content>
+      <v-list-item-title v-if="id % 2 === 0">
+        {{ message }}
+      </v-list-item-title>
+      <v-list-item-title class="text-right" v-else>
+        {{ message }}
+      </v-list-item-title>
+    </v-list-item-content>
+  </v-list-item>
 </template>
 
 <script>
@@ -40,12 +51,11 @@ export default {
       dico: [],
     };
   },
-  props:["id_conv"],
+  props: ["id_conv"],
   methods: {
     envoyer_message() {
       this.$refs.form.validate().then((data) => {
         if (data.valid) {
-          console.log(this.message_saisi);
           fetch("/api/messages", {
             method: "POST",
             body: JSON.stringify({
@@ -61,12 +71,12 @@ export default {
         const champ_saisi = document.getElementById("champ_saisi");
 
         champ_saisi.value = "";
-        this.message_saisi = "";
         this.remonter_messages();
+        this.message_saisi = "";
       });
     },
     remonter_messages() {
-      this.$emit("remonter_messages", this.dico);
+      this.$emit("remonter_messages", this.message_saisi);
     },
   },
 };
