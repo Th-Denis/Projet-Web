@@ -1,39 +1,42 @@
 <template>
-<v-container fluid>
-  <div id="bandeau">
+  <v-container fluid>
+    <div id="bandeau">
+      <v-row>
+        <v-col col="8">
+          <p>Texte généré automatiquement par une machine.</p>
+        </v-col>
+        <v-col cols="4">
+          <Login
+            v-if="userStatus == false"
+            @updateStatus="updateStatus"
+          ></Login>
+          <SignUp
+            v-if="userStatus == false"
+            @updateStatus="updateStatus"
+          ></SignUp>
+          <Logout
+            v-if="userStatus == true"
+            @updateStatus="updateStatus"
+            @click="this.userStatus = false"
+          ></Logout>
+        </v-col>
+      </v-row>
+    </div>
     <v-row>
-      <v-col col="8">
-        <p>Texte généré automatiquement par une machine.</p>
-      </v-col>
-      <v-col cols="4">
-        <Login v-if="userStatus == false" @updateStatus="updateStatus"></Login>
-        <SignUp
-          v-if="userStatus == false"
-          @updateStatus="updateStatus"
-        ></SignUp>
-        <Logout
-          v-if="userStatus == true"
-          @updateStatus="updateStatus"
-          @click="this.userStatus = false"
-        ></Logout>
-      </v-col>
+      <div id="messages">
+        <v-list-item v-for="(message, id, index) in messages" :key="id">
+          <v-list-item-content>
+            <v-list-item-title v-if="index % 2 === 0">
+              {{ message }}
+            </v-list-item-title>
+            <v-list-item-title class="text-right" v-else>
+              {{ message }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </div>
     </v-row>
-  </div>
-  <v-row>
-  <div id="messages">
-      <v-list-item v-for="(message, id, index) in messages" :key="id">
-        <v-list-item-content>
-          <v-list-item-title v-if="index % 2 === 0">
-            {{ message }}
-          </v-list-item-title>
-          <v-list-item-title class="text-right" v-else>
-            {{ message }}
-          </v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-  </div>
-</v-row>
-</v-container>
+  </v-container>
 </template>
 
 <script>
@@ -53,26 +56,26 @@ export default {
       connecte: true,
       userStatus: false,
       selectedConv: null,
-      nouveauMsg: false,
+      attenteMsg: false,
     };
   },
 
   props: ["messages_enbas", "selectedConvo"],
 
   watch: {
-    messages_enbas(){
-        this.getMessages()
-      }
-    ,
+    messages_enbas() {
+      attenteMsg = true; 
+      this.getMessages();
+    },
     selectedConvo() {
-      this.getMessages()
+      this.getMessages();
     },
     userStatus() {
       this.$emit("userStatus", this.userStatus);
       if (this.userStatus == false) {
-        window.location.reload()
+        window.location.reload();
       }
-    }
+    },
   },
 
   methods: {
@@ -113,7 +116,6 @@ export default {
       }.bind(this)
     );
   },
-
 };
 </script>
 
