@@ -12,7 +12,6 @@
       <div id="display_conv">
         <Display_conv
           v-bind:messages_enbas="messages_enbas"
-          :userStatus="userStatus"
         >
         </Display_conv>
       </div>
@@ -39,7 +38,6 @@ export default {
   },
   data() {
     return {
-      userStatus:"true",
       messages_enbas: ""
     };
   },

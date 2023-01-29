@@ -1,6 +1,5 @@
 <template>
   <div>
-    sfqgdf
     <div v-for="message in conversation" :key="message.id">
       {{ message.text }}
     </div>

@@ -13,16 +13,14 @@ def conversations():
     if request.method=='GET':
         return jsonify({'status': 'success', 'conversations': conversations})
     else:
-        newName = request.form.get('name')  
-        print(type(newName))
-        if newName in current_user.conversations:
-            flash("Une de vos conversations porte déjà ce nom")
-            return False
+        newName = request.get_json()['name']
+        if newName in [convo.name for convo in current_user.conversations]:
+            return jsonify({'status': 'fail'})
         else :
             newConv = Conversation(name=newName, user_id=current_user.id)
             db.session.add(newConv)
             db.session.commit()
-            return True
+            return jsonify({'status': 'success'})
     
 @exchange.route('/api/messages', methods=['GET'])
 def messages():

@@ -1,18 +1,20 @@
 <template>
   <div id="history">
     <h3>Conversations</h3>
-    <div class="conversations" v-for="item in items" v-bind:id="item">{{item}}</div> 
-</div>
-  <div id="conv_management_button" >
+    <div class="conversations" v-for="(convo, id) in convos" v-bind:id="id">
+      {{ convo }}
+    </div>
+  </div>
+  <div id="conv_management_button">
     <div class="conv_management">
-      <v-btn variant="tonal" @click = "changer_affichage"> Créer </v-btn>
+      <v-btn variant="tonal" @click="changer_affichage"> Créer </v-btn>
     </div>
     <div class="conv_management">
-      <v-btn variant="tonal"> Supprimer </v-btn>
+      <v-btn variant="tonal" @click="charger_conv()"> Supprimer </v-btn>
     </div>
   </div>
   <div id="conv_management_sai" class="masquer">
-    <form action="http://127.0.0.1:5000/conversations" method="post">
+    <form @submit="charger_conv()">
       <v-text-field
         clearable
         @keydown.enter="creer_conv"
@@ -20,7 +22,6 @@
         name="name"
         variant="underlined"
         v-model="nom_conv_saisi"
-        :counter="3"
         :rules="nameRules"
         required
       ></v-text-field>
@@ -32,7 +33,6 @@ export default {
   data() {
     return {
       showText: true,
-      items: ["item 1", "item 2", "item 3"],
       nom_conv_saisi: "",
       nameRules: [
         (v) => !!v || "Nom obligatoire",
@@ -41,30 +41,73 @@ export default {
     };
   },
   methods: {
+    creer_conv(event) {
+      event.preventDefault();
+      this.changer_affichage();
 
-    creer_conv(event){
-        event.preventDefault();
-        this.changer_affichage();
-        
-          fetch("http://127.0.0.1:5000/conversations", {
-            method: "POST",
-            body: this.message_saisi,
-            headers: { "Content-Type": "text/plain" },
-          })
-          .then(response => response.json()
-          .then(data => console.log(data)));
-        
-      
+      fetch("/api/conversations", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify({
+          name: this.nom_conv_saisi,
+        }),
+      }).then((response) => response.json().then((data) => console.log(data)));
+      this.charger_conv();
     },
 
-    changer_affichage(){
+    charger_conv() {
+      fetch("/api/conversations").then(
+        function (response) {
+          response.json().then(
+            function (data) {
+              if (data.status == "success") {
+                this.convos = data.conversations;
+              } else {
+                return;
+              }
+            }.bind(this)
+          );
+        }.bind(this)
+      );
+    },
 
-        const div_bouton = document.getElementById("conv_management_button");
-        const div_saisie = document.getElementById("conv_management_sai");
+    changer_affichage() {
+      const div_bouton = document.getElementById("conv_management_button");
+      const div_saisie = document.getElementById("conv_management_sai");
 
-        div_bouton.classList.toggle('masquer');
-        div_saisie.classList.toggle('masquer');
-    }
+      div_bouton.classList.toggle("masquer");
+      div_saisie.classList.toggle("masquer");
+    },
+  },
+
+  beforeMount() {
+    fetch("/api/status").then(
+      function (response) {
+        response.json().then(
+          function (data) {
+            if (data.status == "success") {
+              fetch("/api/conversations").then(
+                function (response) {
+                  response.json().then(
+                    function (data) {
+                      if (data.status == "success") {
+                        this.convos = data.conversations;
+                      } else {
+                        return;
+                      }
+                    }.bind(this)
+                  );
+                }.bind(this)
+              );
+            } else {
+              this.convos = JSON.stringify({});
+            }
+          }.bind(this)
+        );
+      }.bind(this)
+    );
   },
 };
 </script>
@@ -80,19 +123,18 @@ h3 {
 .conv_management {
   height: 5%;
 }
-.conversations{
-    color: aqua;
+.conversations {
+  color: aqua;
 }
 
-.masquer{
-    display: none;
+.masquer {
+  display: none;
 }
 #history {
   overflow-y: scroll;
   height: 90%;
   background-color: black;
 }
-
 
 #conv_management_sai {
   padding: 5px;
