@@ -1,7 +1,7 @@
 <template>
-  <v-container fluid>
-    <div id="bandeau">
-      <v-row>
+  <v-container id="top">
+    <div>
+      <v-row id="bandeau">
         <v-col col="8">
           <p>Texte généré automatiquement par une machine.</p>
         </v-col>
@@ -132,8 +132,8 @@ export default {
   background-color: rgb(198, 215, 235);
   color: black;
 }
+
 #bandeau {
-  position: fixed;
   height: 5%;
   width: 100%;
   background-color: rgb(24, 104, 174);

@@ -94,7 +94,7 @@ main {
   position: fixed;
   height: 90%;
   width: 100%;
-  background-color: blue;
+  background-color: rgb(121, 167, 211);
 }
 #sai_message {
   padding-left: 15px;
@@ -102,7 +102,7 @@ main {
   height: 10%;
   position: fixed;
   bottom: 0px;
-  background-color: rgb(24, 104, 174);
+  background-color: rgba(24, 104, 174);
 }
 body {
   padding: 50px;
