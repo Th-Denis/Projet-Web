@@ -14,6 +14,7 @@ export default {
             response.json().then(
               function (data) {
                 this.fetchResponse = data;
+                this.$emit("updateStatus", false);
               }.bind(this)
             );
           }

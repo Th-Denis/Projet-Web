@@ -5,9 +5,9 @@
         <p>Texte généré automatiquement par une machine.</p>
       </v-col>
       <v-col cols="4">
-        <Login v-if="userStatus == false"></Login>
-        <SignUp v-if="userStatus == false"></SignUp>
-        <Logout v-if="userStatus == true"></Logout>
+        <Login v-if="userStatus == false" @updateStatus="updateStatus"></Login>
+        <SignUp v-if="userStatus == false" @updateStatus="updateStatus"></SignUp>
+        <Logout v-if="userStatus == true" @updateStatus="updateStatus"></Logout>
       </v-col>
     </v-row>
   </div>
@@ -31,36 +31,15 @@ export default {
 
   data() {
     return {
-      userStatus: false,
       message: "",
       connecte: true,
     };
   },
   props: ["messages_enbas"],
   methods: {
-    changer_affichage() {
-      const bouton_connexion = document.getElementById("bouton_connexion");
-      const bouton_inscription = document.getElementById("bouton_inscription");
-      const bouton_deconnexion = document.getElementById("bouton_deconnexion");
-
-      if (this.connecte) {
-        bouton_connexion.style.display = "none";
-        bouton_inscription.style.display = "none";
-        bouton_deconnexion.style.display = "flex";
-      } else {
-        bouton_connexion.style.display = "inline";
-        bouton_inscription.style.display = "inline";
-        bouton_deconnexion.style.display = "none";
-      }
-    },
-    connexion() {
-      this.connecte = true;
-      this.changer_affichage();
-    },
-    deconnexion() {
-      this.connecte = false;
-      this.changer_affichage();
-    },
+    updateStatus(status) {
+      this.userStatus=status;
+    }
   },
 };
 </script>

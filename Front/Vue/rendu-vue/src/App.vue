@@ -66,6 +66,7 @@ export default {
   },
   beforeMount() {
     this.getStatus();
+    console.log(this.userStatus)
   },
 };
 </script>

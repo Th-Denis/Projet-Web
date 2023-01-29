@@ -85,7 +85,10 @@ export default {
             response.json().then(
               function (data) {
                 this.fetchResponse = data;
-                if (this.fetchResponse.status = "success") this.dialog=false;
+                if (this.fetchResponse.status = "success"){
+                  this.$emit("updateStatus", true);
+                  this.dialog=false;
+                }
               }.bind(this)
             );
           }
