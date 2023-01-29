@@ -36,12 +36,15 @@ export default {
       userStatus: false,
     };
   },
+
   props: ["messages_enbas"],
   methods: {
     updateStatus(status) {
       this.userStatus = status;
+      // METTRE EMIT ICI
     },
   },
+
   beforeMount() {
     fetch("/api/status").then(
         function (response) {
@@ -57,6 +60,7 @@ export default {
         }.bind(this)
       );
     },
+    // METTRE EMIT ICI
 };
 </script>
 
