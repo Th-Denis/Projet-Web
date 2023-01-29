@@ -1,11 +1,23 @@
 <template>
   <div id="history">
-    <v-list>
+    <v-list class="conversations">
       <h3>Conversations</h3>
-      <v-list-item v-for="(convo, id) in this.convos" :key="id" :title="convo" @click="selectConvo(id) ">
-        <v-list-item-action >
-              <v-btn  variant="tonal" text color="error" @click="suppr_conv(id)">Supprimer</v-btn>
-            </v-list-item-action>
+      <v-list-item
+        class="conversations"
+        v-for="(convo, id) in this.convos"
+        :key="id"
+        :title="convo"
+      >
+        <v-list-item-action>
+          <v-row
+            ><v-btn variant="tonal" @click="selectConvo(id)">Lire</v-btn></v-row
+          >
+          <v-row
+            ><v-btn variant="tonal" text color="error" @click="suppr_conv(id)"
+              >Supprimer</v-btn
+            ></v-row
+          >
+        </v-list-item-action>
       </v-list-item>
     </v-list>
   </div>
@@ -46,14 +58,14 @@ export default {
     };
   },
 
-  props:["userStatus"],
+  props: ["userStatus"],
   watch: {
     selectedConvo() {
       this.getMessages();
     },
     userStatus() {
       this.charger_conv();
-    }
+    },
   },
 
   methods: {
@@ -63,8 +75,8 @@ export default {
 
       if (valid) {
         this.creer_conv();
-      };
-      this.charger_conv()
+      }
+      this.charger_conv();
     },
 
     creer_conv() {
@@ -98,17 +110,18 @@ export default {
 
     async suppr_conv(id) {
       await fetch(`api/del+conversations/${id}`, {
-          method: "DELETE"
-        });
+        method: "DELETE",
+      });
       try {
         this.charger_conv();
       } catch (error) {
         console.error(error);
-      }
+      };
+      this.getMessages();
     },
 
-    selectConvo(id){
-      this.$emit("convoId", id)
+    selectConvo(id) {
+      this.$emit("convoId", id);
     },
 
     changer_affichage() {
@@ -119,38 +132,39 @@ export default {
       div_saisie.classList.toggle("masquer");
     },
   },
-
 };
 </script>
 
 <style scoped>
 h3 {
-  color: wheat;
+  color: black;
+  padding-top: 10px;
+  padding-bottom: 30px;
 }
-
 .btn_management {
   width: 100%;
 }
 .conv_management {
-  height: 5%;
+  height: 20%;
+  padding-top: 20px;
 }
 .conversations {
-  color: aqua;
+  color: black;
+  padding-bottom: 20px;
+  background-color: rgb(217, 165, 179);
 }
-
 .masquer {
   display: none;
 }
 #history {
   overflow-y: scroll;
-  height: 90%;
-  background-color: black;
+  height: 80%;
+  background-color: rgb(217, 165, 179);
+  border: solid 1px;
 }
-
 #conv_management_sai {
   padding: 5px;
 }
-
 #sai_nom_conv {
   display: none;
 }

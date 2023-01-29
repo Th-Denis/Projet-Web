@@ -73,7 +73,6 @@ nav {
   background-color: aqua;
   width: 15%;
 }
-
 main {
   background-color: red;
   position: fixed;
@@ -81,34 +80,30 @@ main {
   width: 85%;
   right: 0px;
 }
-
 #info_user {
   height: 20%;
-  background-color: lightblue;
+  background-color: rgb(217, 165, 179);
+  border: solid 1px;
 }
-
 #histo_conv {
   height: 80%;
-  background-color: yellow;
+  background-color: rgb(217, 165, 179);
+  border: solid 1px;
 }
-
 #display_conv {
   position: fixed;
   height: 90%;
   width: 100%;
   background-color: blue;
 }
-
 #sai_message {
   padding-left: 15px;
-
   width: 100%;
   height: 10%;
   position: fixed;
   bottom: 0px;
-  background-color: blueviolet;
+  background-color: rgb(24, 104, 174);
 }
-
 body {
   padding: 50px;
 }

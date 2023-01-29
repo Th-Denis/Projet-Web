@@ -27,6 +27,7 @@ def conversations():
 def delete_conv(id):
     conv = Conversation.query.get(id)
     if conv:
+        Message.query.filter(Message.conversation_id == conv.id).delete()
         db.session.delete(conv)
         db.session.commit()
         return jsonify({'status': 'success'})
@@ -43,4 +44,5 @@ def messages():
         newMsg = Message(text=request.get_json()['text'], conversation_id=request.get_json()['id_conv'])
         db.session.add(newMsg)
         db.session.commit()
+        
         return jsonify({'status': 'success'})

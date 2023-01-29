@@ -129,27 +129,17 @@ export default {
   bottom: 0px;
   position: fixed;
   overflow-y: scroll;
-  background-color: brown;
+  background-color: rgb(198, 215, 235);
+  color: black;
 }
 #bandeau {
   position: fixed;
   height: 5%;
   width: 100%;
-  background-color: bisque;
+  background-color: rgb(24, 104, 174);
 }
-.masquer {
-  display: none;
-}
-
 .message {
   padding: 5px;
-}
-
-.bouton_enregistrement {
-  margin: 5px;
-}
-
-p {
-  background-color: rgb(147, 153, 153);
+  color: black;
 }
 </style>
