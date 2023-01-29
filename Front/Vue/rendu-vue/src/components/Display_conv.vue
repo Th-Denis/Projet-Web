@@ -64,8 +64,11 @@ export default {
 
   watch: {
     messages_enbas() {
-      attenteMsg = true; 
-      this.getMessages();
+      if (this.attenteMsg == false) {
+        this.attenteMsg = true; 
+        this.getMessages();
+    }
+    this.attenteMsg = false;
     },
     selectedConvo() {
       this.getMessages();
