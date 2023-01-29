@@ -96,7 +96,7 @@ export default {
             response.json().then(
               function (data) {
                 this.fetchResponse = data;
-                console.log(this.fetchResponse);
+                if (this.fetchResponse.status = "success") this.dialog=false;
               }.bind(this)
             );
           }
