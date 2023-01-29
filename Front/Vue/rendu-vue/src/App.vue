@@ -10,7 +10,11 @@
     </nav>
     <main>
       <div id="display_conv">
-        <Display_conv v-bind:messages_enbas="messages_enbas" v-bind:userStatus="userStatus"> </Display_conv>
+        <Display_conv
+          v-bind:messages_enbas="messages_enbas"
+          :userStatus="userStatus"
+        >
+        </Display_conv>
       </div>
       <div id="sai_message">
         <Sai_message @remonter_messages="gestion_remonter_messages">
@@ -35,38 +39,14 @@ export default {
   },
   data() {
     return {
-      messages_enbas: "",
-      userStatus: false,
+      userStatus:"true",
+      messages_enbas: ""
     };
   },
   methods: {
     gestion_remonter_messages(messages) {
       this.messages_enbas = messages;
     },
-    getStatus() {
-      fetch("/api/status").then(
-        function (response) {
-          if (response.status != 201) {
-            this.fetchError = response.status;
-          } else {
-            response.json().then(
-              function (data) {
-                this.fetchResponse = data;
-                if (this.fetchResponse.status == "success") {
-                  this.userStatus = true;
-                } else {
-                  this.userStatus = false;
-                }
-              }.bind(this)
-            );
-          }
-        }.bind(this)
-      );
-    },
-  },
-  beforeMount() {
-    this.getStatus();
-    console.log(this.userStatus)
   },
 };
 </script>

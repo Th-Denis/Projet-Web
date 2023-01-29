@@ -7,7 +7,7 @@
       <v-col cols="4">
         <Login v-if="userStatus == false" @updateStatus="updateStatus"></Login>
         <SignUp v-if="userStatus == false" @updateStatus="updateStatus"></SignUp>
-        <Logout v-if="userStatus == true" @updateStatus="updateStatus"></Logout>
+        <Logout v-if="userStatus == true" @updateStatus="updateStatus" @click="this.userStatus=false"></Logout>
       </v-col>
     </v-row>
   </div>
@@ -33,14 +33,30 @@ export default {
     return {
       message: "",
       connecte: true,
+      userStatus: false,
     };
   },
   props: ["messages_enbas"],
   methods: {
     updateStatus(status) {
-      this.userStatus=status;
-    }
+      this.userStatus = status;
+    },
   },
+  beforeMount() {
+    fetch("/api/status").then(
+        function (response) {
+          response.json().then(
+            function (data) {
+              if (data.status=="success"){
+                this.userStatus=true;
+              } else {
+                this.userStatus=false;
+              };
+            }.bind(this)
+          );
+        }.bind(this)
+      );
+    },
 };
 </script>
 

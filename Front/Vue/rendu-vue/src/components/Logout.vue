@@ -1,5 +1,5 @@
 <template>
-        <v-btn variant="tonal" @click="sendLogout"> Logout </v-btn>
+  <v-btn variant="tonal" @click="sendLogout"> Logout </v-btn>
 </template>
 
 <script>
@@ -14,7 +14,9 @@ export default {
             response.json().then(
               function (data) {
                 this.fetchResponse = data;
-                this.$emit("updateStatus", false);
+                if (this.fetchResponse.status = "success") {
+                  this.$emit("updateStatus", false);
+                }
               }.bind(this)
             );
           }
