@@ -1,12 +1,15 @@
 from flask import Flask
+from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
 db = SQLAlchemy()
 
 def create_app():
-    app = Flask(__name__, template_folder = "../front") # creates the Flask instance, __name__ is  
+    app = Flask(__name__) # creates the Flask instance, __name__ is  
                           # the name of the current Python module
+    CORS(app)
+
     app.config['SECRET_KEY'] = 'secret-key-goes-here' # it is used 
                          #by Flask and extensions to keep data safe
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite' 
@@ -32,12 +35,16 @@ def create_app():
         return User.query.get(int(user_id))
     
     # blueprint for auth routes in our app
-    # blueprint allow you to orgnize your flask app
+    # blueprint allow you to organize your flask app
     from auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
+
+    from exchange import exchange as exchange_blueprint
+    app.register_blueprint(exchange_blueprint)
 
     # blueprint for non-auth parts of app
     from main import main as main_blueprint
     app.register_blueprint(main_blueprint)
+
     
     return app

@@ -5,9 +5,9 @@
         <p>Texte généré automatiquement par une machine.</p>
       </v-col>
       <v-col cols="4">
-        <Login v-if="userLog == false"></Login>
-        <SignUp v-if="userLog == false"></SignUp>
-        <Logout v-if="userLog == true"></Logout>
+        <Login v-if="userStatus == false"></Login>
+        <SignUp v-if="userStatus == false"></SignUp>
+        <Logout v-if="userStatus == true"></Logout>
       </v-col>
     </v-row>
   </div>
@@ -31,7 +31,7 @@ export default {
 
   data() {
     return {
-      userLog: false,
+      userStatus: false,
       message: "",
       connecte: true,
     };

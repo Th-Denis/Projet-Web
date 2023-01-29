@@ -10,7 +10,7 @@
     </nav>
     <main>
       <div id="display_conv">
-        <Display_conv v-bind:messages_enbas="messages_enbas"> </Display_conv>
+        <Display_conv v-bind:messages_enbas="messages_enbas" v-bind:userStatus="userStatus"> </Display_conv>
       </div>
       <div id="sai_message">
         <Sai_message @remonter_messages="gestion_remonter_messages">
@@ -66,7 +66,6 @@ export default {
   },
   beforeMount() {
     this.getStatus();
-    console.log(this.userStatus)
   },
 };
 </script>
