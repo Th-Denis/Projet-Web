@@ -5,13 +5,14 @@
         <Info_user></Info_user>
       </div>
       <div id="histo_conv">
-        <Histo_conv></Histo_conv>
+        <Histo_conv @convoId="selectConvo"></Histo_conv>
       </div>
     </nav>
     <main>
       <div id="display_conv">
         <Display_conv
           v-bind:messages_enbas="messages_enbas"
+          v-bind:selectedConvo="selectedConvo"
         >
         </Display_conv>
       </div>
@@ -38,13 +39,17 @@ export default {
   },
   data() {
     return {
-      messages_enbas: ""
+      messages_enbas: "",
+      selectedConvo: null,
     };
   },
   methods: {
     gestion_remonter_messages(messages) {
       this.messages_enbas = messages;
     },
+    selectConvo(id) {
+      this.selectedConvo = id;
+    }
   },
 };
 </script>

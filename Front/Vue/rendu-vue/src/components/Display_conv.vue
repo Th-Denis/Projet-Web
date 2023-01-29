@@ -6,15 +6,32 @@
       </v-col>
       <v-col cols="4">
         <Login v-if="userStatus == false" @updateStatus="updateStatus"></Login>
-        <SignUp v-if="userStatus == false" @updateStatus="updateStatus"></SignUp>
-        <Logout v-if="userStatus == true" @updateStatus="updateStatus" @click="this.userStatus=false"></Logout>
+        <SignUp
+          v-if="userStatus == false"
+          @updateStatus="updateStatus"
+        ></SignUp>
+        <Logout
+          v-if="userStatus == true"
+          @updateStatus="updateStatus"
+          @click="this.userStatus = false"
+        ></Logout>
       </v-col>
     </v-row>
   </div>
-  <div id="conversation">
-    <div class="message" v-for="item in items">
-      {{ item }}
-    </div>
+
+  <div id="messages">
+    <v-row>
+      <v-list-item v-for="(message, id) in messages" :key="id">
+        <v-list-item-content>
+          <v-list-item-title v-if="id % 2 === 0">
+            {{ message }}
+          </v-list-item-title>
+          <v-list-item-title class="text-right" v-else>
+            {{ message }}
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-row>
   </div>
 </template>
 
@@ -31,36 +48,52 @@ export default {
 
   data() {
     return {
-      message: "",
+      messages: [],
       connecte: true,
       userStatus: false,
+      selectedConv: null,
     };
   },
 
-  props: ["messages_enbas"],
+  props: ["messages_enbas", "selectedConvo"],
   methods: {
     updateStatus(status) {
       this.userStatus = status;
       // METTRE EMIT ICI
     },
-  },
-
-  beforeMount() {
-    fetch("/api/status").then(
+    async getMessages(selectedConvo) {
+      await fetch(`/api/messages?id=${selectedConvo}`).then(
         function (response) {
           response.json().then(
             function (data) {
-              if (data.status=="success"){
-                this.userStatus=true;
+              if (data.status == "success") {
+                this.messages = data.messages;
               } else {
-                this.userStatus=false;
-              };
+                return;
+              }
             }.bind(this)
           );
         }.bind(this)
       );
     },
-    // METTRE EMIT ICI
+  },
+
+  beforeMount() {
+    fetch("/api/status").then(
+      function (response) {
+        response.json().then(
+          function (data) {
+            if (data.status == "success") {
+              this.userStatus = true;
+            } else {
+              this.userStatus = false;
+            }
+          }.bind(this)
+        );
+      }.bind(this)
+    );
+  },
+  // METTRE EMIT ICI
 };
 </script>
 

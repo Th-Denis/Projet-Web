@@ -36,7 +36,8 @@ def delete_conv(id):
 @exchange.route('/api/messages', methods=['GET', 'POST'])
 def messages():
     if request.method=='GET':
-        messages = { msg.id : msg.text for msg in conversation.messages }
+        conv = Conversation.query.get(request.args.get("id"))
+        messages = { msg.id : msg.text for msg in conv.messages }
         return jsonify({'status': 'success', 'messages': messages})
     else:
         newMsg = Message(text=request.get_json()['text'], conversation_id=request.get_json()['id_conv'])

@@ -2,8 +2,8 @@
   <div id="history">
     <v-list>
       <h3>Conversations</h3>
-      <v-list-item v-for="(convo, id) in this.convos" :key="id" :title="convo" >
-        <v-list-item-action>
+      <v-list-item v-for="(convo, id) in this.convos" :key="id" :title="convo" :on-click-once="selectConvo(id)">
+        <v-list-item-action >
               <v-btn  variant="tonal" text color="error" @click="suppr_conv(id)">Supprimer</v-btn>
             </v-list-item-action>
       </v-list-item>
@@ -98,6 +98,10 @@ export default {
       } catch (error) {
         console.error(error);
       }
+    },
+
+    selectConvo(id){
+      this.$emit("convoId", id)
     },
 
     changer_affichage() {
