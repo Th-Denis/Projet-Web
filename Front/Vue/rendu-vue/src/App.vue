@@ -1,18 +1,95 @@
 <template>
-  <SignUp></SignUp>
-  <Login></Login>
-  <Logout></Logout>
+  <v-app>
+    <nav>
+      <div id="info_user">
+        <Info_user></Info_user>
+      </div>
+      <div id="histo_conv">
+        <Histo_conv></Histo_conv>
+      </div>
+    </nav>
+    <main>
+      <div id="display_conv">
+        <Display_conv v-bind:messages_enbas="messages_enbas"> </Display_conv>
+      </div>
+      <div id="sai_message">
+        <Sai_message @remonter_messages="gestion_remonter_messages">
+        </Sai_message>
+      </div>
+    </main>
+  </v-app>
 </template>
 
 <script>
-import Login from "@/components/Login.vue";
-import SignUp from "@/components/SignUp.vue";
-import Logout from "@/components/Logout.vue";
+import Info_user from "@/components/Info_user.vue";
+import Histo_conv from "@/components/Histo_conv.vue";
+import Sai_message from "@/components/Sai_message.vue";
+import Display_conv from "@/components/Display_conv.vue";
+
 export default {
   components: {
-    Login,
-    SignUp,
-    Logout,
+    Info_user,
+    Histo_conv,
+    Sai_message,
+    Display_conv,
+  },
+  data() {
+    return { messages_enbas:"" };
+  },
+  methods: {
+    gestion_remonter_messages(messages) {
+      console.log(messages);
+      this.messages_enbas=messages;
+      console.log(this.messages_enbas);
+    },
   },
 };
 </script>
+
+<style scoped>
+nav {
+  position: fixed;
+  height: 100%;
+  background-color: aqua;
+  width: 15%;
+}
+
+main {
+  background-color: red;
+  position: fixed;
+  height: 100%;
+  width: 85%;
+  right: 0px;
+}
+
+#info_user {
+  height: 20%;
+  background-color: lightblue;
+}
+
+#histo_conv {
+  height: 80%;
+  background-color: yellow;
+}
+
+#display_conv {
+  position: fixed;
+  height: 90%;
+  width: 100%;
+  background-color: blue;
+}
+
+#sai_message {
+  padding-left: 15px;
+
+  width: 100%;
+  height: 10%;
+  position: fixed;
+  bottom: 0px;
+  background-color: blueviolet;
+}
+
+body {
+  padding: 50px;
+}
+</style>
