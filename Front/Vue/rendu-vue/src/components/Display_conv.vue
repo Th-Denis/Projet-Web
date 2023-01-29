@@ -1,4 +1,5 @@
 <template>
+<v-container fluid>
   <div id="bandeau">
     <v-row>
       <v-col col="8">
@@ -18,12 +19,11 @@
       </v-col>
     </v-row>
   </div>
-
+  <v-row>
   <div id="messages">
-    <v-row>
-      <v-list-item v-for="(message, id) in messages" :key="id">
+      <v-list-item v-for="(message, id, index) in messages" :key="id">
         <v-list-item-content>
-          <v-list-item-title v-if="id % 2 === 0">
+          <v-list-item-title v-if="index % 2 === 0">
             {{ message }}
           </v-list-item-title>
           <v-list-item-title class="text-right" v-else>
@@ -31,8 +31,9 @@
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-    </v-row>
   </div>
+</v-row>
+</v-container>
 </template>
 
 <script>
@@ -52,17 +53,36 @@ export default {
       connecte: true,
       userStatus: false,
       selectedConv: null,
+      nouveauMsg: false,
     };
   },
 
   props: ["messages_enbas", "selectedConvo"],
+
+  watch: {
+    messages_enbas(){
+        this.getMessages()
+      }
+    ,
+    selectedConvo() {
+      this.getMessages()
+    },
+    userStatus() {
+      this.$emit("userStatus", this.userStatus);
+      if (this.userStatus == false) {
+        window.location.reload()
+      }
+    }
+  },
+
   methods: {
     updateStatus(status) {
       this.userStatus = status;
-      // METTRE EMIT ICI
+      this.$emit("currentUser", this.userStatus);
     },
-    async getMessages(selectedConvo) {
-      await fetch(`/api/messages?id=${selectedConvo}`).then(
+
+    async getMessages() {
+      await fetch(`/api/messages?id=${this.selectedConvo}`).then(
         function (response) {
           response.json().then(
             function (data) {
@@ -93,7 +113,7 @@ export default {
       }.bind(this)
     );
   },
-  // METTRE EMIT ICI
+
 };
 </script>
 

@@ -40,7 +40,7 @@ export default {
       dico: [],
     };
   },
-  props: ["id_conv"],
+  props: ["selectedConvo"],
   methods: {
     envoyer_message() {
       this.$refs.form.validate().then((data) => {
@@ -48,10 +48,10 @@ export default {
           fetch("/api/messages", {
             method: "POST",
             body: JSON.stringify({
-              id_conv: this.id_conv,
+              id_conv: this.selectedConvo,
               text: this.message_saisi,
             }),
-            headers: { "Content-Type": "text/plain" },
+            headers: { "Content-Type": "application/json;charset=utf-8" },
           }).then((response) =>
             response.json().then((data) => console.log(data))
           );
@@ -65,7 +65,7 @@ export default {
       });
     },
     remonter_messages() {
-      this.$emit("remonter_messages", this.message_saisi);
+      this.$emit("message_saisi", true);
     },
   },
 };

@@ -21,7 +21,7 @@ def conversations():
             db.session.add(newConv)
             db.session.commit()
             return jsonify({'status': 'success'})
-        
+
 @exchange.route('/api/del+conversations/<id>', methods=["DELETE"])
 @login_required
 def delete_conv(id):

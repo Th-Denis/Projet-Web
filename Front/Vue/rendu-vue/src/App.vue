@@ -5,7 +5,10 @@
         <Info_user></Info_user>
       </div>
       <div id="histo_conv">
-        <Histo_conv @convoId="selectConvo"></Histo_conv>
+        <Histo_conv
+          @convoId="selectConvo"
+          v-bind:userStatus="userStatus"
+        ></Histo_conv>
       </div>
     </nav>
     <main>
@@ -13,11 +16,15 @@
         <Display_conv
           v-bind:messages_enbas="messages_enbas"
           v-bind:selectedConvo="selectedConvo"
+          @userStatus="updUserStatus"
         >
         </Display_conv>
       </div>
       <div id="sai_message">
-        <Sai_message @remonter_messages="gestion_remonter_messages">
+        <Sai_message
+          @message_saisi="gestion_remonter_messages"
+          v-bind:selectedConvo="selectedConvo"
+        >
         </Sai_message>
       </div>
     </main>
@@ -39,17 +46,22 @@ export default {
   },
   data() {
     return {
-      messages_enbas: "",
+      messages_enbas: null,
       selectedConvo: null,
+      userStatus: null,
     };
   },
+
   methods: {
     gestion_remonter_messages(messages) {
       this.messages_enbas = messages;
     },
     selectConvo(id) {
       this.selectedConvo = id;
-    }
+    },
+    updUserStatus(id) {
+      this.userStatus = id;
+    },
   },
 };
 </script>

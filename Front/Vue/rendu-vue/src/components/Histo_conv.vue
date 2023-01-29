@@ -2,7 +2,7 @@
   <div id="history">
     <v-list>
       <h3>Conversations</h3>
-      <v-list-item v-for="(convo, id) in this.convos" :key="id" :title="convo" :on-click-once="selectConvo(id)">
+      <v-list-item v-for="(convo, id) in this.convos" :key="id" :title="convo" @click="selectConvo(id) ">
         <v-list-item-action >
               <v-btn  variant="tonal" text color="error" @click="suppr_conv(id)">Supprimer</v-btn>
             </v-list-item-action>
@@ -45,9 +45,15 @@ export default {
       convos: [],
     };
   },
-  mounted() {
-    this.charger_conv();
-    this.intervalId = setInterval(() => this.charger_conv(), 1000);
+
+  props:["userStatus"],
+  watch: {
+    selectedConvo() {
+      this.getMessages();
+    },
+    userStatus() {
+      this.charger_conv();
+    }
   },
 
   methods: {
@@ -57,7 +63,8 @@ export default {
 
       if (valid) {
         this.creer_conv();
-      }
+      };
+      this.charger_conv()
     },
 
     creer_conv() {
@@ -113,9 +120,6 @@ export default {
     },
   },
 
-  beforeDestroy() {
-    clearInterval(this.intervalId);
-  },
 };
 </script>
 
