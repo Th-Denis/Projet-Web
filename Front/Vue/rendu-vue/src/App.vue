@@ -34,14 +34,39 @@ export default {
     Display_conv,
   },
   data() {
-    return { messages_enbas:"" };
+    return {
+      messages_enbas: "",
+      userStatus: false,
+    };
   },
   methods: {
     gestion_remonter_messages(messages) {
-      console.log(messages);
-      this.messages_enbas=messages;
-      console.log(this.messages_enbas);
+      this.messages_enbas = messages;
     },
+    getStatus() {
+      fetch("/api/status").then(
+        function (response) {
+          if (response.status != 201) {
+            this.fetchError = response.status;
+          } else {
+            response.json().then(
+              function (data) {
+                this.fetchResponse = data;
+                if (this.fetchResponse.status == "success") {
+                  this.userStatus = true;
+                } else {
+                  this.userStatus = false;
+                }
+              }.bind(this)
+            );
+          }
+        }.bind(this)
+      );
+    },
+  },
+  beforeMount() {
+    this.getStatus();
+    console.log(this.userStatus)
   },
 };
 </script>

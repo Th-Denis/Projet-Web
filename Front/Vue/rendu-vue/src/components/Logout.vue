@@ -1,7 +1,5 @@
 <template>
-  <v-row justify="center">
-        <v-btn color="primary" @click="sendLogout"> Logout </v-btn>
-  </v-row>
+        <v-btn variant="tonal" @click="sendLogout"> Logout </v-btn>
 </template>
 
 <script>

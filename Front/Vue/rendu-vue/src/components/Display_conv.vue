@@ -4,31 +4,11 @@
       <v-col col="8">
         <p>Texte généré automatiquement par une machine.</p>
       </v-col>
-      <v-col cols="4"
-        ><v-btn
-          id="bouton_inscription"
-          class="bouton_enregistrement"
-          variant="tonal"
-          @click="connexion"
-        >
-          Inscription </v-btn
-        ><v-btn
-          id="bouton_connexion"
-          class="bouton_enregistrement"
-          variant="tonal"
-          @click="connexion"
-        >
-          Connexion
-        </v-btn>
-        <v-btn
-          id="bouton_deconnexion"
-          class="bouton_enregistrement masquer"
-          variant="tonal"
-          @click="deconnexion"
-        >
-          Déconnexion
-        </v-btn></v-col
-      >
+      <v-col cols="4">
+        <Login v-if="userLog == false"></Login>
+        <SignUp v-if="userLog == false"></SignUp>
+        <Logout v-if="userLog == true"></Logout>
+      </v-col>
     </v-row>
   </div>
   <div id="conversation">
@@ -39,23 +19,30 @@
 </template>
 
 <script>
+import Login from "@/components/Login.vue";
+import SignUp from "@/components/SignUp.vue";
+import Logout from "@/components/Logout.vue";
 export default {
+  components: {
+    Login,
+    SignUp,
+    Logout,
+  },
+
   data() {
     return {
-      showText: true,
-      items: ["item 1", "item 2", "item 3"],
+      userLog: false,
       message: "",
-      imageUrl: "https:</exemple.fr/img.png",
       connecte: true,
     };
   },
-  props: ['messages_enbas'],
+  props: ["messages_enbas"],
   methods: {
     changer_affichage() {
       const bouton_connexion = document.getElementById("bouton_connexion");
       const bouton_inscription = document.getElementById("bouton_inscription");
       const bouton_deconnexion = document.getElementById("bouton_deconnexion");
-      console.log(this.messages_enbas);
+
       if (this.connecte) {
         bouton_connexion.style.display = "none";
         bouton_inscription.style.display = "none";
@@ -66,14 +53,14 @@ export default {
         bouton_deconnexion.style.display = "none";
       }
     },
-    connexion(){
-        this.connecte = true;
-        this.changer_affichage();
+    connexion() {
+      this.connecte = true;
+      this.changer_affichage();
     },
-    deconnexion(){
-        this.connecte = false;
-        this.changer_affichage();
-    }
+    deconnexion() {
+      this.connecte = false;
+      this.changer_affichage();
+    },
   },
 };
 </script>

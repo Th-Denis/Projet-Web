@@ -1,8 +1,7 @@
 <template>
-  <v-row justify="center">
     <v-dialog v-model="dialog" persistent>
       <template v-slot:activator="{ props }">
-        <v-btn color="primary" v-bind="props"> SignUp </v-btn>
+        <v-btn variant="tonal" v-bind="props"> SignUp </v-btn>
       </template>
       <v-card>
         <v-card-title>
@@ -46,7 +45,6 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-row>
 </template>
 
 <script>
