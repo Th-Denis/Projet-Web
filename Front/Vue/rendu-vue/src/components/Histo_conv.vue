@@ -1,64 +1,80 @@
 <template>
   <div id="history">
-    <h3>Conversations</h3>
-    <div class="conversations" v-for="(convo, id) in convos" v-bind:id="id">
-      {{ convo }}
-    </div>
+    <v-list>
+      <h3>Conversations</h3>
+      <v-list-item v-for="(convo, id) in this.convos" :key="id" :title="convo" >
+        <v-list-item-action>
+              <v-btn  variant="tonal" text color="error" @click="suppr_conv(id)">Supprimer</v-btn>
+            </v-list-item-action>
+      </v-list-item>
+    </v-list>
   </div>
   <div id="conv_management_button">
-    <div class="conv_management">
-      <v-btn variant="tonal" @click="changer_affichage"> Créer </v-btn>
-    </div>
-    <div class="conv_management">
-      <v-btn variant="tonal" @click="charger_conv()"> Supprimer </v-btn>
+    <div class="conv_management" @click="this.changer_affichage">
+      <v-btn variant="tonal"> Créer </v-btn>
     </div>
   </div>
   <div id="conv_management_sai" class="masquer">
-    <form @submit="charger_conv()">
+    <v-form ref="form" v-model="valid" lazy-validation>
       <v-text-field
         clearable
-        @keydown.enter="creer_conv"
+        @keydown.enter="validate"
+        @update:focused="charger_conv"
+        @click:input="charger_conv"
         label="Nom de la conversation"
         name="name"
         variant="underlined"
-        v-model="nom_conv_saisi"
+        v-model="nom_conv"
         :rules="nameRules"
         required
       ></v-text-field>
-    </form>
+    </v-form>
   </div>
 </template>
+
 <script>
 export default {
   data() {
     return {
       showText: true,
-      nom_conv_saisi: "",
+      nom_conv: "",
       nameRules: [
         (v) => !!v || "Nom obligatoire",
         (v) => (v && v.length >= 3) || "Veuillez saisir au moins 3 caractères",
       ],
+      convos: [],
     };
   },
-  methods: {
-    creer_conv(event) {
-      event.preventDefault();
-      this.changer_affichage();
+  mounted() {
+    this.charger_conv();
+    this.intervalId = setInterval(() => this.charger_conv(), 1000);
+  },
 
+  methods: {
+    async validate(event) {
+      event.preventDefault();
+      const { valid } = await this.$refs.form.validate();
+
+      if (valid) {
+        this.creer_conv();
+      }
+    },
+
+    creer_conv() {
+      this.changer_affichage();
       fetch("/api/conversations", {
         method: "POST",
         headers: {
           "Content-Type": "application/json;charset=utf-8",
         },
         body: JSON.stringify({
-          name: this.nom_conv_saisi,
+          name: this.nom_conv,
         }),
       }).then((response) => response.json().then((data) => console.log(data)));
-      this.charger_conv();
     },
 
-    charger_conv() {
-      fetch("/api/conversations").then(
+    async charger_conv() {
+      await fetch("/api/conversations").then(
         function (response) {
           response.json().then(
             function (data) {
@@ -73,6 +89,17 @@ export default {
       );
     },
 
+    async suppr_conv(id) {
+      await fetch(`api/del+conversations/${id}`, {
+          method: "DELETE"
+        });
+      try {
+        this.charger_conv();
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
     changer_affichage() {
       const div_bouton = document.getElementById("conv_management_button");
       const div_saisie = document.getElementById("conv_management_sai");
@@ -82,32 +109,8 @@ export default {
     },
   },
 
-  beforeMount() {
-    fetch("/api/status").then(
-      function (response) {
-        response.json().then(
-          function (data) {
-            if (data.status == "success") {
-              fetch("/api/conversations").then(
-                function (response) {
-                  response.json().then(
-                    function (data) {
-                      if (data.status == "success") {
-                        this.convos = data.conversations;
-                      } else {
-                        return;
-                      }
-                    }.bind(this)
-                  );
-                }.bind(this)
-              );
-            } else {
-              this.convos = JSON.stringify({});
-            }
-          }.bind(this)
-        );
-      }.bind(this)
-    );
+  beforeDestroy() {
+    clearInterval(this.intervalId);
   },
 };
 </script>
